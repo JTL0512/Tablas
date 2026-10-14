@@ -1,15 +1,91 @@
+function reproducirSonido(tipo) {
+    const audio = new Audio(
+        tipo === 'correcto'
+            ? 'SONIDOS/correcto.mp3'
+            : 'SONIDOS/error.mp3'
+    );
+
+    audio.play().catch(error => {
+        console.warn('No se pudo reproducir el sonido:', error);
+    });
+}
+
+
 const AVATARS = ['🧑‍🚀','👩‍🚀','👨‍🚀','🤖','👽','🦸‍♀️','🦸‍♂️','🧙‍♂️'];
 
 const PLANETAS = {
-  2: { nombre:'Mercurio', emoji:'🪨', color:'#a0a0a0' },
-  3: { nombre:'Venus', emoji:'🌋', color:'#ff9800' },
-  4: { nombre:'Tierra', emoji:'🌍', color:'#4caf50' },
-  5: { nombre:'Marte', emoji:'🔴', color:'#f44336' },
-  6: { nombre:'Júpiter', emoji:'🟤', color:'#ff7043' },
-  7: { nombre:'Saturno', emoji:'🪐', color:'#ffd54f' },
-  8: { nombre:'Urano', emoji:'🔵', color:'#29b6f6' },
-  9: { nombre:'Neptuno', emoji:'🌊', color:'#5c6bc0' },
-  10: { nombre:'Plutón', emoji:'⚪', color:'#ce93d8' }
+  2: { 
+    nombre:'Mercurio', 
+    emoji:'🪨', 
+    color:'#a0a0a0',
+    tituloMision: 'La Forja Solar de Mercurio',
+    historia: 'El calor del Sol es extremo. Los paneles de la nave necesitan calibrar su energía en pares de 2. ¡Aprende la Tabla del 2 para activar los escudos térmicos y acceder a los simuladores de vuelo!',
+    objeto: 'escudos solares'
+  },
+  3: { 
+    nombre:'Venus', 
+    emoji:'🌋', 
+    color:'#ff9800',
+    tituloMision: 'Los Volcanes Ácidos de Venus',
+    historia: 'Tormentas de azufre azotan la atmósfera. Los droides deben sincronizar cristales en grupos de 3 para neutralizar los gases. ¡Domina la Tabla del 3 para despejar la niebla y jugar en la superficie!',
+    objeto: 'cristales de energía'
+  },
+  4: { 
+    nombre:'Tierra', 
+    emoji:'🌍', 
+    color:'#4caf50',
+    tituloMision: 'La Estación Orbital Terrestre',
+    historia: 'Desde la órbita de nuestro hogar, 4 cuadrantes de satélites necesitan alineación matemática. ¡Aprende la Tabla del 4 para enviar las coordenadas a la Tierra y desbloquear las misiones!',
+    objeto: 'satélites de rescate'
+  },
+  5: { 
+    nombre:'Marte', 
+    emoji:'🔴', 
+    color:'#f44336',
+    tituloMision: 'La Base Marciana Roja',
+    historia: 'Una tormenta de arena roja cubre la colonia. Cada rover de auxilio viaja en patrullas de 5 miembros. ¡Aprende la Tabla del 5 para encender las balizas y abrir los juegos de supervivencia!',
+    objeto: 'naves rover'
+  },
+  6: { 
+    nombre:'Júpiter', 
+    emoji:'🟤', 
+    color:'#ff7043',
+    tituloMision: 'El Ojo del Gigante Júpiter',
+    historia: 'Entras al gigante gaseoso. La Gran Mancha Roja crea campos de gravedad que requieren patrones de 6 núcleos de energía. ¡Aprende la Tabla del 6 para estabilizar la nave y comenzar el entrenamiento!',
+    objeto: 'núcleos de plasma'
+  },
+  7: { 
+    nombre:'Saturno', 
+    emoji:'🪐', 
+    color:'#ffd54f',
+    tituloMision: 'Los Anillos Brillantes de Saturno',
+    historia: 'Los asteroides de hielo en los anillos giran en 7 órbitas magnéticas. Para navegar sin chocar, debes calcular sus trayectorias. ¡Aprende la Tabla del 7 para activar los propulsores!',
+    objeto: 'anillos de hielo'
+  },
+  8: { 
+    nombre:'Urano', 
+    emoji:'🔵', 
+    color:'#29b6f6',
+    tituloMision: 'El Abismo Congelado de Urano',
+    historia: 'El frío cósmico amenaza los reactores de la nave. 8 generadores de calor deben sincronizarse a la perfección. ¡Aprende la Tabla del 8 para romper el hielo y jugar en la atmósfera!',
+    objeto: 'cápsulas térmicas'
+  },
+  9: { 
+    nombre:'Neptuno', 
+    emoji:'🌊', 
+    color:'#5c6bc0',
+    tituloMision: 'Los Vórtices Cósmicos de Neptuno',
+    historia: 'Los vientos supersónicos de Neptuno son los más veloces del sistema solar. Calcula con la Tabla del 9 las 9 corrientes de navegación para poder surcar las tormentas de gas.',
+    objeto: 'balizas marinas'
+  },
+  10: { 
+    nombre:'Plutón', 
+    emoji:'⚪', 
+    color:'#ce93d8',
+    tituloMision: 'La Frontera Final de Plutón',
+    historia: 'En el borde exterior de la galaxia, la baliza cósmica requiere 10 códigos numéricos decodificados. ¡Aprende la Tabla del 10 para coronarte como Guardián de la Galaxia y jugar las misiones finales!',
+    objeto: 'medallas galácticas'
+  }
 };
 
 const LOGROS = [
@@ -125,10 +201,20 @@ function renderizarMenu() {
             `;
         }
         
+        let estadoMisionBadge = '';
+        if (desbloqueado) {
+            if (tablaData.aprendida) {
+                estadoMisionBadge = `<span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; background: rgba(0,230,118,0.2); color: #69f0ae; border: 1px solid rgba(0,230,118,0.4); margin-top: 4px;">🎮 Juegos Libres</span>`;
+            } else {
+                estadoMisionBadge = `<span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; background: rgba(255,107,53,0.2); color: #ffb74d; border: 1px solid rgba(255,107,53,0.4); margin-top: 4px;">📜 Misión: Aprender</span>`;
+            }
+        }
+
         card.innerHTML = `
             ${esferaPlanetaHTML}
             <div class="planeta-nombre">${planetaInfo.nombre}</div>
             <div class="planeta-tabla">Tabla del ${i}</div>
+            ${estadoMisionBadge}
             <div class="planeta-estrellas">${desbloqueado ? estrellasHTML : ''}</div>
         `;
         
@@ -154,6 +240,9 @@ function renderizarMenu() {
 function mostrarOpcionesPlaneta(numTabla) {
     window.tablaActual = numTabla;
     const planeta = PLANETAS[numTabla];
+    const d = window.datosEstudiante;
+    const tablaData = d.tablas[numTabla] || { aprendida: false, estrellas: 0 };
+    const estaAprendida = tablaData.aprendida;
     
     // Si ya existe modal previo, removerlo
     let modalPrevio = document.getElementById('modal-planeta');
@@ -164,18 +253,42 @@ function mostrarOpcionesPlaneta(numTabla) {
     modal.className = 'modal-overlay anim-fade-in';
     modal.innerHTML = `
         <div class="modal-card anim-bounce">
-            <div class="planeta-esfera-wrapper" style="margin: 0 auto 15px auto; width: 85px; height: 85px;">
+            <div class="planeta-esfera-wrapper" style="margin: 0 auto 12px auto; width: 85px; height: 85px;">
                 ${numTabla === 7 ? '<div class="anillo-saturno" style="width: 110px; height: 32px;"></div>' : ''}
                 <div class="planeta-esfera planeta-${numTabla}" style="width: 75px; height: 75px;"></div>
             </div>
-            <h2 style="color: var(--color-gold); font-size: 1.8rem; margin-bottom: 5px;">${planeta.nombre}</h2>
-            <p style="color: var(--color-primary); font-size: 1.2rem; font-weight: bold; margin-bottom: 20px;">Tabla del ${numTabla}</p>
-            <p style="color: var(--color-text-muted); margin-bottom: 25px;">¿Qué misión deseas emprender, astronauta?</p>
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn-primario" id="modal-btn-aprender" style="min-width: 150px;">📖 Aprender</button>
-                <button class="btn-acento" id="modal-btn-jugar" style="min-width: 150px;">🎮 Misiones y Juegos</button>
+            <h2 style="color: var(--color-gold); font-size: 1.7rem; margin-bottom: 2px;">${planeta.nombre}</h2>
+            <p style="color: var(--color-primary); font-size: 1.1rem; font-weight: bold; margin-bottom: 12px;">Tabla del ${numTabla}</p>
+            
+            <!-- Caja de Historia y Misión -->
+            <div class="modal-historia-caja">
+                <div class="modal-historia-titulo">
+                    <span>📜</span> Misión: ${planeta.tituloMision}
+                </div>
+                <div class="modal-historia-texto">
+                    "${planeta.historia}"
+                </div>
+                ${!estaAprendida ? `
+                    <div class="modal-mision-alerta">
+                        <span>⚠️</span> <strong>Fase obligatoria:</strong> Debes dominar la lección de la Tabla del ${numTabla} para calibrar los sistemas antes de desbloquear los juegos.
+                    </div>
+                ` : `
+                    <div class="modal-mision-alerta completada">
+                        <span>✅</span> <strong>¡Sistemas Calibrados!</strong> Has aprendido esta tabla. ¡Los simuladores y misiones de combate están listos!
+                    </div>
+                `}
             </div>
-            <button class="btn-secundario" id="modal-btn-cerrar" style="margin-top: 20px; padding: 6px 20px; font-size: 0.9rem;">Cerrar</button>
+
+            <!-- Botones de Acción -->
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-primario ${!estaAprendida ? 'btn-mision-activa' : ''}" id="modal-btn-aprender" style="min-width: 160px;">
+                    📖 ${estaAprendida ? 'Repasar Lección' : '1. Aprender Tabla'}
+                </button>
+                <button class="${estaAprendida ? 'btn-acento' : 'btn-secundario btn-bloqueado-candado'}" id="modal-btn-jugar" style="min-width: 160px;">
+                    ${estaAprendida ? '🎮 2. Jugar Misiones' : '🔒 Jugar (Bloqueado)'}
+                </button>
+            </div>
+            <button class="btn-secundario" id="modal-btn-cerrar" style="margin-top: 20px; padding: 6px 20px; font-size: 0.9rem;">Volver al Mapa</button>
         </div>
     `;
 
@@ -187,6 +300,10 @@ function mostrarOpcionesPlaneta(numTabla) {
     };
 
     document.getElementById('modal-btn-jugar').onclick = () => {
+        if (!estaAprendida) {
+            mostrarNotificacion(`🔒 ¡Misión bloqueada! Debes aprender y completar la Tabla del ${numTabla} primero.`, 'error');
+            return;
+        }
         modal.remove();
         if(typeof mostrarMenuJuegos === 'function') mostrarMenuJuegos(numTabla);
     };

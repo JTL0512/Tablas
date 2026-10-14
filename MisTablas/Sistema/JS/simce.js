@@ -1,70 +1,70 @@
 const SIMCE_PREGUNTAS = [
   {
     id: 1,
-    texto: 'En la librería, cada cuaderno cuesta $3.000. Si Sofía compra 7 cuadernos, ¿cuánto dinero necesita en total?',
+    texto: 'En la tienda de la Base Espacial, cada tanque de oxígeno para trajes espaciales cuesta $3.000 créditos. Si la capitana Sofía adquiere 7 tanques para su tripulación, ¿cuánto dinero espacial necesita en total?',
     alternativas: ['$18.000', '$21.000', '$24.000', '$28.000'],
     correcta: 1,
-    explicacion: '7 cuadernos × $3.000 = $21.000'
+    explicacion: '7 tanques × $3.000 = $21.000'
   },
   {
     id: 2,
-    texto: 'En el colegio, la profesora organizó 5 filas de sillas con 8 sillas en cada fila. ¿Cuántas sillas hay en total?',
-    alternativas: ['35 sillas', '40 sillas', '45 sillas', '48 sillas'],
+    texto: 'En el centro de mando de la estación, los ingenieros organizaron 5 paneles de control con 8 pantallas táctiles en cada panel. ¿Cuántas pantallas de navegación hay en total?',
+    alternativas: ['35 pantallas', '40 pantallas', '45 pantallas', '48 pantallas'],
     correcta: 1,
-    explicacion: '5 filas × 8 sillas = 40 sillas'
+    explicacion: '5 paneles × 8 pantallas = 40 pantallas'
   },
   {
     id: 3,
-    texto: 'Pedro tiene 4 cajas de lápices de colores. En cada caja hay 6 lápices. ¿Cuántos lápices tiene Pedro en total?',
-    alternativas: ['20 lápices', '22 lápices', '24 lápices', '28 lápices'],
+    texto: 'El astronauta Pedro tiene 4 cajas herméticas de herramientas lunares. En cada caja hay 6 llaves magnéticas. ¿Cuántas llaves tiene en total para reparar los rovers?',
+    alternativas: ['20 llaves', '22 llaves', '24 llaves', '28 llaves'],
     correcta: 2,
-    explicacion: '4 cajas × 6 lápices = 24 lápices'
+    explicacion: '4 cajas × 6 llaves = 24 llaves'
   },
   {
     id: 4,
-    texto: 'En la biblioteca hay 3 estantes. En cada estante hay 9 libros. ¿Cuántos libros hay en total en la biblioteca?',
-    alternativas: ['24 libros', '27 libros', '30 libros', '36 libros'],
+    texto: 'En la bóveda del observatorio astronómico hay 3 estantes de telescopios. En cada estante hay 9 cristales de enfoque. ¿Cuántos cristales hay en total en el observatorio?',
+    alternativas: ['24 cristales', '27 cristales', '30 cristales', '36 cristales'],
     correcta: 1,
-    explicacion: '3 estantes × 9 libros = 27 libros'
+    explicacion: '3 estantes × 9 cristales = 27 cristales'
   },
   {
     id: 5,
-    texto: 'En el recreo, se formaron 6 equipos de fútbol con 7 jugadores cada uno. ¿Cuántos estudiantes están jugando fútbol?',
-    alternativas: ['36 estudiantes', '42 estudiantes', '48 estudiantes', '49 estudiantes'],
+    texto: 'En la academia espacial, se formaron 6 escuadrones de pilotos con 7 cadetes cada uno para una misión de entrenamiento. ¿Cuántos cadetes están entrenando en total?',
+    alternativas: ['36 cadetes', '42 cadetes', '48 cadetes', '49 cadetes'],
     correcta: 1,
-    explicacion: '6 equipos × 7 jugadores = 42 estudiantes'
+    explicacion: '6 escuadrones × 7 cadetes = 42 cadetes'
   },
   {
     id: 6,
-    texto: 'María compró 8 paquetes de galletas para compartir. Cada paquete tiene 4 galletas. ¿Cuántas galletas tiene en total?',
-    alternativas: ['28 galletas', '30 galletas', '32 galletas', '36 galletas'],
+    texto: 'La científica María preparó 8 raciones espaciales para la travesía a Marte. Si cada paquete rinde 4 días de alimento deshidratado, ¿para cuántos días de viaje tiene ración en total?',
+    alternativas: ['28 días', '30 días', '32 días', '36 días'],
     correcta: 2,
-    explicacion: '8 paquetes × 4 galletas = 32 galletas'
+    explicacion: '8 paquetes × 4 días = 32 días'
   },
   {
     id: 7,
-    texto: 'En una granja hay 9 corrales. En cada corral hay 5 ovejas. ¿Cuántas ovejas hay en total en la granja?',
-    alternativas: ['40 ovejas', '45 ovejas', '50 ovejas', '54 ovejas'],
+    texto: 'En un invernadero bio-espacial en la Luna hay 9 domos de cultivo. Si en cada domo crecen 5 plantas hidropónicas, ¿cuántas plantas hay en total en la colonia lunar?',
+    alternativas: ['40 plantas', '45 plantas', '50 plantas', '54 plantas'],
     correcta: 1,
-    explicacion: '9 corrales × 5 ovejas = 45 ovejas'
+    explicacion: '9 domos × 5 plantas = 45 plantas'
   },
   {
     id: 8,
-    texto: 'Un bus escolar tiene 10 filas de asientos. En cada fila caben 3 niños. ¿Cuántos niños caben en total en el bus?',
-    alternativas: ['25 niños', '28 niños', '30 niños', '33 niños'],
+    texto: 'Una nave de transporte intergaláctico tiene 10 compartimentos de pasajeros. Si en cada compartimento viajan 3 científicos estelares, ¿cuántos científicos viajan en la nave?',
+    alternativas: ['25 científicos', '28 científicos', '30 científicos', '33 científicos'],
     correcta: 2,
-    explicacion: '10 filas × 3 niños = 30 niños'
+    explicacion: '10 compartimentos × 3 científicos = 30 científicos'
   },
   {
     id: 9,
-    texto: 'Carlos colecciona estampillas. Tiene 2 álbumes con 8 estampillas en cada uno, y además tiene 3 álbumes con 6 estampillas en cada uno. ¿Cuántas estampillas tiene en total?',
-    alternativas: ['30 estampillas', '34 estampillas', '36 estampillas', '40 estampillas'],
+    texto: 'El comandante Carlos recolectó muestras minerales en Saturno. Tiene 2 contenedores con 8 fragmentos de meteorito cada uno, y 3 contenedores con 6 cristales cósmicos cada uno. ¿Cuántos minerales espaciales recolectó en total?',
+    alternativas: ['30 minerales', '34 minerales', '36 minerales', '40 minerales'],
     correcta: 1,
-    explicacion: '(2 × 8) + (3 × 6) = 16 + 18 = 34 estampillas'
+    explicacion: '(2 × 8) + (3 × 6) = 16 + 18 = 34 minerales'
   },
   {
     id: 10,
-    texto: 'En la feria, cada kilo de manzanas cuesta $2.000. La mamá de Javiera compró 4 kilos de manzanas y 3 kilos de peras a $3.000 el kilo. ¿Cuánto gastó en total?',
+    texto: 'En el astillero espacial, cada unidad de combustible de plasma cuesta $2.000 créditos y cada batería iónica cuesta $3.000 créditos. Si la nave compra 4 unidades de plasma y 3 baterías iónicas, ¿cuántos créditos gasta en total?',
     alternativas: ['$14.000', '$15.000', '$17.000', '$21.000'],
     correcta: 2,
     explicacion: '(4 × $2.000) + (3 × $3.000) = $8.000 + $9.000 = $17.000'

@@ -1,28 +1,47 @@
 function mostrarMenuJuegos(numTabla) {
+    const td = window.datosEstudiante.tablas[numTabla];
+    
+    // Verificación estricta: si no ha aprendido la tabla, no puede entrar
+    if (!td || !td.aprendida) {
+        mostrarNotificacion(`🔒 ¡Misión bloqueada! Primero debes completar la lección de la Tabla del ${numTabla}.`, 'error');
+        mostrarOpcionesPlaneta(numTabla);
+        return;
+    }
+
     navegarA('pantalla-juegos-menu');
-    document.getElementById('juegos-menu-titulo').textContent = `Misiones en ${PLANETAS[numTabla].nombre}`;
+    const p = PLANETAS[numTabla];
+    document.getElementById('juegos-menu-titulo').textContent = `Misiones en ${p.nombre} (Tabla del ${numTabla})`;
     window.tablaActual = numTabla;
     
-    const td = window.datosEstudiante.tablas[numTabla];
     const lista = document.getElementById('lista-juegos');
-    lista.innerHTML = '';
+    lista.innerHTML = `
+        <div class="modal-historia-caja" style="width: 100%; max-width: 850px; margin-bottom: 25px;">
+            <div class="modal-historia-titulo" style="font-size: 1.1rem;">
+                <span>🚀</span> Centro de Simulaciones de ${p.nombre}: ${p.tituloMision}
+            </div>
+            <div class="modal-historia-texto" style="font-size: 0.95rem;">
+                "¡Has demostrado dominar la Tabla del ${numTabla}! Ahora es momento de poner a prueba tus reflejos, memoria y lógica espacial en las 5 pruebas de fuego. ¡Completa cada desafío para ganar estrellas y medallas de honor!"
+            </div>
+        </div>
+    `;
     
     const juegosInfo = [
-        {id: 'memoria', nombre: '🧠 Memoria Cósmica', desc: 'Encuentra las parejas de multiplicaciones'},
-        {id: 'atrapa', nombre: '🎯 Atrapa Asteroides', desc: 'Selecciona el resultado correcto'},
-        {id: 'arrastra', nombre: '🧩 Arrastra y Completa', desc: 'Arrastra cada resultado a su operación'},
-        {id: 'detective', nombre: '🔍 Detective Espacial', desc: 'Descubre el número misterioso'},
-        {id: 'tiempo', nombre: '⏱️ Desafío Contrarreloj', desc: 'Responde antes de que se acabe el tiempo'}
+        {id: 'memoria', nombre: '🧠 Memoria Cósmica', desc: 'Sincroniza pares cuánticos de multiplicación y resultado'},
+        {id: 'atrapa', nombre: '🎯 Atrapa Asteroides', desc: 'Dispara a los asteroides con el producto exacto'},
+        {id: 'arrastra', nombre: '🧩 Arrastra y Completa', desc: 'Ensambla los núcleos de potencia a cada ecuación'},
+        {id: 'detective', nombre: '🔍 Detective Espacial', desc: 'Descifra las incógnitas ocultas por los piratas cósmicos'},
+        {id: 'tiempo', nombre: '⏱️ Desafío Contrarreloj', desc: 'Sobrevive a la tormenta respondiendo antes de que acabe el tiempo'}
     ];
     
     juegosInfo.forEach(j => {
         const completado = td.juegosCompletados.includes(j.id);
         const card = document.createElement('div');
-        card.className = 'tarjeta-juego tarjeta';
+        card.className = `tarjeta-juego tarjeta ${completado ? 'completado' : ''}`;
         card.innerHTML = `
-            <h3>${j.nombre} ${completado ? '✅' : ''}</h3>
-            <p>${j.desc}</p>
-            <button class="btn-acento" style="margin-top:10px;">Jugar 🚀</button>
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">${j.nombre.split(' ')[0]}</div>
+            <h3 style="font-size: 1.1rem; color: var(--color-gold);">${j.nombre.split(' ').slice(1).join(' ')} ${completado ? '✅' : ''}</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.85rem; margin: 8px 0 15px 0;">${j.desc}</p>
+            <button class="btn-acento" style="width: 100%;">${completado ? 'Mejorar Récord ⭐' : 'Iniciar Misión 🚀'}</button>
         `;
         card.onclick = () => iniciarJuego(j.id, numTabla);
         lista.appendChild(card);

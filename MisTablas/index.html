@@ -462,6 +462,19 @@
             }
         });
 
+        function reproducirSonido(tipo) {
+            const ruta = tipo === 'correcto'
+                ? './SONIDOS/correcto.mp3'
+                : './SONIDOS/error.mp3';
+
+            const audio = new Audio(ruta);
+            audio.volume = 1;
+
+            audio.play().catch(error => {
+                console.error('No se pudo reproducir el sonido:', error);
+            });
+        }
+
         // Handle login
         btnIngresar.addEventListener('click', () => {
             const nombre = inputNombre.value.trim();
@@ -485,7 +498,10 @@
                 isValid = false;
             }
 
-            if (!isValid) return;
+            if (!isValid) {
+                reproducirSonido('error');
+                return;
+            }
 
             // Save or Update data
             const savedDataStr = localStorage.getItem('galaxiaMultiplicadora');
@@ -506,6 +522,8 @@
             localStorage.setItem('galaxiaMultiplicadora', JSON.stringify(data));
 
             // Success animation & redirect
+            reproducirSonido('correcto');
+
             successText.textContent = `¡Bienvenido/a, ${nombre}!`;
             successOverlay.classList.add('show');
             
