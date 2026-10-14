@@ -33,6 +33,9 @@ function mostrarMenuJuegos(numTabla) {
         {id: 'tiempo', nombre: '⏱️ Desafío Contrarreloj', desc: 'Sobrevive a la tormenta respondiendo antes de que acabe el tiempo'}
     ];
     
+    const gridCards = document.createElement('div');
+    gridCards.className = 'juegos-grid-cards';
+    
     juegosInfo.forEach(j => {
         const completado = td.juegosCompletados.includes(j.id);
         const card = document.createElement('div');
@@ -44,8 +47,9 @@ function mostrarMenuJuegos(numTabla) {
             <button class="btn-acento" style="width: 100%;">${completado ? 'Mejorar Récord ⭐' : 'Iniciar Misión 🚀'}</button>
         `;
         card.onclick = () => iniciarJuego(j.id, numTabla);
-        lista.appendChild(card);
+        gridCards.appendChild(card);
     });
+    lista.appendChild(gridCards);
 }
 
 function iniciarJuego(tipo, numTabla) {

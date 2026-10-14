@@ -1,13 +1,18 @@
 function reproducirSonido(tipo) {
-    const audio = new Audio(
-        tipo === 'correcto'
-            ? 'SONIDOS/correcto.mp3'
-            : 'SONIDOS/error.mp3'
-    );
-
-    audio.play().catch(error => {
-        console.warn('No se pudo reproducir el sonido:', error);
-    });
+    try {
+        if (typeof SonidosGalaxia !== 'undefined') {
+            if (tipo === 'correcto') SonidosGalaxia.correcto();
+            else if (tipo === 'error') SonidosGalaxia.error();
+            else if (tipo === 'exito') SonidosGalaxia.exito();
+            else if (tipo === 'click') SonidosGalaxia.click();
+            else if (tipo === 'logro') SonidosGalaxia.logro();
+            else if (tipo === 'siguiente') SonidosGalaxia.siguiente();
+            else if (tipo === 'tick') SonidosGalaxia.tick();
+            else if (tipo === 'alerta') SonidosGalaxia.alerta();
+        }
+    } catch (e) {
+        console.warn('Error de sonido:', e);
+    }
 }
 
 
@@ -150,6 +155,11 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
     notif.className = `notificacion ${tipo} anim-slide-up`;
     notif.innerHTML = mensaje;
     container.appendChild(notif);
+    
+    // Reproducir sonido según tipo de notificación
+    if (tipo === 'exito') reproducirSonido('correcto');
+    else if (tipo === 'error') reproducirSonido('error');
+    else reproducirSonido('click');
     
     setTimeout(() => {
         notif.style.opacity = '0';
@@ -316,6 +326,14 @@ function mostrarOpcionesPlaneta(numTabla) {
 function cerrarSesion() {
     localStorage.removeItem('galaxiaMultiplicadora');
     window.location.href = '../index.html';
+}
+
+function reiniciarProgreso() {
+    if(confirm('⚠️ ¿Estás seguro? Se borrará TODO el progreso del estudiante actual y se volverá a la pantalla de inicio. Esta acción no se puede deshacer.')) {
+        localStorage.removeItem('galaxiaMultiplicadora');
+        reproducirSonido('click');
+        window.location.href = '../index.html';
+    }
 }
 
 function shuffle(array) {
