@@ -1,0 +1,1616 @@
+:root {
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1a3e;
+  --bg-card: rgba(30, 33, 72, 0.85);
+  --color-primary: #00d4ff;
+  --color-secondary: #7c4dff;
+  --color-accent: #ff6b35;
+  --color-gold: #ffd700;
+  --color-success: #00e676;
+  --color-error: #ff5252;
+  --color-text: #ffffff;
+  --color-text-muted: #b0b0d0;
+  --border-radius: 16px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --transition: all 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--color-text);
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+h1, h2, h3, .titulo {
+  font-family: 'Fredoka One', cursive;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Animated Starfield */
+body::before, body::after, .stars-layer-3 {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::before {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: float 100s linear infinite;
+  opacity: 0.5;
+}
+
+body::after {
+  background-image: 
+    radial-gradient(3px 3px at 50px 50px, #fff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 150px 100px, #fff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 200px 150px, #fff, rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 250px 50px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  animation: float 70s linear infinite;
+  opacity: 0.8;
+}
+
+.stars-layer-3 {
+  background-image: 
+    radial-gradient(1px 1px at 10px 10px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 80px 120px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 200px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 240px 90px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 250px 250px;
+  animation: float 150s linear infinite;
+  opacity: 0.3;
+}
+
+/* Base Sections */
+.pantalla {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.pantalla.activa, section[style*="display: flex"], section[style*="display: block"] {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.seccion-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 15px 20px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+}
+
+.btn-volver {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-volver:hover {
+  background: var(--color-primary);
+  color: var(--bg-primary);
+}
+
+.seccion-titulo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5em;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cards */
+.tarjeta {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+}
+
+/* Realistic 3D Planets */
+.tarjeta-planeta {
+  width: 155px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  background: rgba(18, 22, 55, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  padding: 15px 10px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tarjeta-planeta:hover:not(.bloqueado) {
+  transform: translateY(-8px) scale(1.05);
+  border-color: var(--color-primary);
+  box-shadow: 0 15px 35px rgba(0, 212, 255, 0.25);
+}
+
+.planeta-esfera-wrapper {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* Base sphere with 3D sphere lighting */
+.planeta-esfera {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.85), inset 6px 6px 12px rgba(255, 255, 255, 0.4), 0 0 18px rgba(0, 0, 0, 0.5);
+}
+
+.tarjeta-planeta:hover:not(.bloqueado) .planeta-esfera {
+  transform: rotate(15deg) scale(1.08);
+}
+
+/* Planeta 2: Mercurio */
+.planeta-2 {
+  background: radial-gradient(circle at 32% 30%, #e0e0e0 0%, #9e9e9e 40%, #424242 85%, #212121 100%);
+  box-shadow: inset -12px -12px 18px rgba(0,0,0,0.9), inset 5px 5px 10px rgba(255,255,255,0.4), 0 0 15px rgba(180, 180, 180, 0.4);
+}
+
+/* Planeta 3: Venus (atmósfera densa, remolinos naranja) */
+.planeta-3 {
+  background: radial-gradient(circle at 30% 28%, #ffe082 0%, #ffb74d 30%, #f57c00 65%, #bf360c 95%);
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.85), inset 6px 6px 12px rgba(255,248,225,0.6), 0 0 20px rgba(255, 152, 0, 0.5);
+}
+
+/* Planeta 4: Tierra (océanos, continentes, nubes) */
+.planeta-4 {
+  background: radial-gradient(circle at 30% 28%, #81d4fa 0%, #0288d1 30%, #2e7d32 55%, #1565c0 80%, #0d47a1 100%);
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.85), inset 6px 6px 14px rgba(255,255,255,0.7), 0 0 22px rgba(3, 169, 244, 0.55);
+}
+
+/* Planeta 5: Marte (planeta rojo, óxido de hierro) */
+.planeta-5 {
+  background: radial-gradient(circle at 30% 28%, #ff8a65 0%, #e64a19 40%, #bf360c 75%, #4e1402 100%);
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.9), inset 6px 6px 12px rgba(255,204,188,0.5), 0 0 20px rgba(244, 67, 54, 0.5);
+}
+
+/* Planeta 6: Júpiter (franjas gaseosas gigantes) */
+.planeta-6 {
+  background: repeating-linear-gradient(
+    0deg,
+    #d7ccc8 0px, #bcaaa4 6px,
+    #a1887f 10px, #8d6e63 15px,
+    #d7ccc8 20px, #b08968 26px,
+    #6d4c41 32px
+  );
+  box-shadow: inset -14px -14px 22px rgba(0,0,0,0.92), inset 7px 7px 12px rgba(255,255,255,0.4), 0 0 24px rgba(215, 175, 140, 0.5);
+}
+
+/* Planeta 7: Saturno con sus anillos */
+.planeta-7 {
+  background: repeating-linear-gradient(
+    15deg,
+    #ffe082 0px, #ffd54f 6px,
+    #ffca28 12px, #fbc02d 18px,
+    #f57f17 24px
+  );
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.9), inset 6px 6px 10px rgba(255,255,255,0.5), 0 0 20px rgba(255, 213, 79, 0.5);
+}
+
+.anillo-saturno {
+  position: absolute;
+  width: 96px;
+  height: 28px;
+  border-radius: 50%;
+  border: 7px solid rgba(255, 224, 130, 0.65);
+  border-top-color: rgba(255, 248, 225, 0.85);
+  transform: rotate(-25deg);
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+}
+
+/* Planeta 8: Urano (gas azul hielo translúcido) */
+.planeta-8 {
+  background: radial-gradient(circle at 30% 28%, #e0f7fa 0%, #80deea 35%, #26c6da 65%, #00838f 100%);
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.85), inset 6px 6px 14px rgba(255,255,255,0.8), 0 0 22px rgba(38, 198, 218, 0.6);
+}
+
+/* Planeta 9: Neptuno (azul profundo cósmico) */
+.planeta-9 {
+  background: radial-gradient(circle at 30% 28%, #7986cb 0%, #3f51b5 35%, #1a237e 75%, #090c3d 100%);
+  box-shadow: inset -12px -12px 20px rgba(0,0,0,0.9), inset 6px 6px 14px rgba(197, 202, 233, 0.6), 0 0 24px rgba(63, 81, 181, 0.6);
+}
+
+/* Planeta 10: Plutón (hielo y tonos violeta) */
+.planeta-10 {
+  background: radial-gradient(circle at 30% 28%, #f3e5f5 0%, #ce93d8 35%, #8e24aa 70%, #4a148c 100%);
+  box-shadow: inset -12px -12px 18px rgba(0,0,0,0.9), inset 5px 5px 12px rgba(255,255,255,0.6), 0 0 18px rgba(186, 104, 200, 0.5);
+}
+
+.planeta-candado {
+  font-size: 2.4rem;
+  color: #8c90b0;
+  filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
+}
+
+.tarjeta-planeta .planeta-nombre {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15em;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.tarjeta-planeta .planeta-tabla {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.85em;
+}
+
+.tarjeta-planeta .planeta-estrellas {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.tarjeta-planeta.completado {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 25px rgba(255,215,0,0.35);
+}
+
+.tarjeta-planeta.bloqueado {
+  opacity: 0.5;
+  filter: grayscale(60%);
+  cursor: not-allowed;
+}
+
+/* Game Cards */
+.tarjeta-juego {
+  width: 200px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tarjeta-juego .juego-icono {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.tarjeta-juego .juego-nombre {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+.tarjeta-juego .juego-desc {
+  color: var(--color-text-muted);
+  font-size: 0.85em;
+}
+
+.tarjeta-juego:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--color-secondary);
+}
+
+/* Buttons */
+button {
+  transition: var(--transition);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.btn-primario, .btn-secundario, .btn-acento, .btn-peligro {
+  padding: 12px 30px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.1em;
+  font-family: 'Fredoka One', cursive;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-primario {
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+}
+
+.btn-primario:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--color-primary);
+}
+
+.btn-secundario {
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-secundario:hover {
+  background: var(--color-primary);
+  color: var(--bg-primary);
+}
+
+.btn-acento {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-gold));
+}
+
+.btn-peligro {
+  background: var(--color-error);
+}
+
+.btn-acento:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 107, 53, 0.6), 0 8px 20px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.15);
+}
+
+.btn-peligro:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 0 25px rgba(255, 82, 82, 0.6), 0 8px 20px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.15);
+}
+
+.btn-primario:active, .btn-secundario:active, .btn-acento:active, .btn-peligro:active {
+  transform: scale(0.95) translateY(1px) !important;
+  filter: brightness(0.9);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4) !important;
+}
+
+.btn-small {
+  padding: 8px 20px;
+  font-size: 0.9em;
+}
+
+@keyframes cosmic-btn-pulse {
+  0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.7), 0 0 40px rgba(124, 77, 255, 0.3); }
+  100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.4); }
+}
+
+.btn-volver:hover {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+/* Progress Bar */
+.barra-progreso {
+  width: 100%;
+  height: 20px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.barra-progreso-relleno {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  transition: width 0.5s ease;
+}
+
+.barra-oro .barra-progreso-relleno {
+  background: linear-gradient(90deg, #ffd700, #ffaa00);
+}
+
+/* Stars */
+.estrella {
+  font-size: 1.5em;
+  transition: var(--transition);
+}
+
+.estrella.activa {
+  color: var(--color-gold);
+  text-shadow: 0 0 10px gold;
+}
+
+.estrella.inactiva {
+  color: #444;
+  opacity: 0.4;
+}
+
+/* Notification */
+.notificacion {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  padding: 15px 25px;
+  border-radius: var(--border-radius);
+  font-weight: bold;
+  font-size: 1em;
+  animation: slideInRight 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+}
+
+.notificacion.exito {
+  background: var(--color-success);
+  color: #000;
+}
+
+.notificacion.error {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.notificacion.info {
+  background: var(--color-primary);
+  color: #000;
+}
+
+/* Main Menu */
+#header-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+#titulo-galaxia {
+  font-size: 2.5em;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+  margin: 20px 0;
+  text-align: center;
+}
+
+#mapa-galaxia {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#menu-acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Learning Section Modern & Aesthetic */
+#contenido-aprender {
+  max-width: 850px;
+  width: 100%;
+}
+
+.aprender-visor-container {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.visor-ecuacion-destacada {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.8rem;
+  color: var(--color-gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+  margin-bottom: 15px;
+}
+
+.visor-subtitulo {
+  color: var(--color-primary);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Grupos espaciados y elegantes */
+.contenedor-grupos-elegante {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  min-height: 180px;
+  background: rgba(10, 14, 39, 0.55);
+  border-radius: 16px;
+  border: 1px dashed rgba(0, 212, 255, 0.3);
+  margin-bottom: 25px;
+}
+
+.capsula-grupo {
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 212, 255, 0.12));
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
+}
+
+.capsula-grupo:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+}
+
+.capsula-etiqueta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.capsula-elementos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 130px;
+}
+
+.item-visual-icono {
+  font-size: 1.45rem;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+  transition: transform 0.2s ease;
+}
+
+.item-visual-icono:hover {
+  transform: scale(1.3);
+}
+
+/* Barra de navegación de multiplicaciones 1 al 10 */
+.carrusel-nav-multiplicaciones {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.btn-num-multiplicador {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 33, 72, 0.85);
+  color: white;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-num-multiplicador:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  color: var(--color-primary);
+}
+
+.btn-num-multiplicador.activo {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  border-color: var(--color-gold);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.explicacion-concepto {
+  background: rgba(255, 215, 0, 0.08);
+  border-left: 4px solid var(--color-gold);
+  border-radius: 0 12px 12px 0;
+  padding: 15px 20px;
+  margin-top: 15px;
+  font-size: 1.05rem;
+  color: #fff;
+  line-height: 1.5;
+}
+
+/* Visor Secuencial Paso a Paso (1xN hasta 10xN) */
+.secuencial-progreso-barra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 25px auto;
+  padding: 10px 16px;
+  background: rgba(10, 14, 39, 0.6);
+  border-radius: 40px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.secuencial-bolita {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.secuencial-bolita.completada {
+  background: linear-gradient(135deg, #00e676, #00b0ff);
+  color: #04121f;
+  border-color: #69f0ae;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
+}
+
+.secuencial-bolita.activa {
+  background: linear-gradient(135deg, #ff9100, #ffd700);
+  color: #04121f;
+  border-color: #ffffff;
+  transform: scale(1.18);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+}
+
+.tarjeta-paso-secuencial {
+  background: linear-gradient(145deg, rgba(30, 33, 72, 0.95), rgba(15, 18, 45, 0.98));
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(0, 212, 255, 0.08);
+  border-radius: 24px;
+  padding: 35px 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contador-paso-badge {
+  display: inline-block;
+  padding: 5px 16px;
+  border-radius: 20px;
+  background: rgba(0, 212, 255, 0.15);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.gran-ecuacion-animada {
+  font-family: 'Fredoka One', cursive;
+  font-size: 3.5rem;
+  color: var(--color-gold);
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.resultado-destacado-glow {
+  color: #00e676;
+  text-shadow: 0 0 30px rgba(0, 230, 118, 0.6);
+  display: inline-block;
+  animation: bounceIn 0.5s ease;
+}
+
+.controles-navegacion-paso {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.paso-indicador {
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.paso-indicador.activo {
+  background: var(--color-primary);
+  color: #0a0e27;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.paso-indicador.completado {
+  background: var(--color-success);
+  color: #0a0e27;
+}
+
+.pregunta-container {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.pregunta-container h2 {
+  font-size: 2.5rem;
+  color: var(--color-gold);
+  margin-bottom: 25px;
+}
+
+.quiz-opciones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.quiz-opcion {
+  padding: 15px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.3em;
+  font-family: 'Fredoka One', cursive;
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+}
+
+.quiz-opcion.correcta {
+  background: var(--color-success);
+  animation: bounceIn 0.5s ease;
+}
+
+.quiz-opcion.incorrecta {
+  background: var(--color-error);
+  animation: shake 0.5s ease;
+}
+
+/* Panel de Indicadores de Pasos de Misión */
+#aprender-pasos {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.paso-indicador {
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: rgba(30, 33, 72, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  color: var(--color-text-muted);
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.paso-indicador.activo {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  color: #ffffff;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+  transform: scale(1.05);
+}
+
+.paso-indicador.completado {
+  background: rgba(0, 230, 118, 0.2);
+  color: #00e676;
+  border-color: #00e676;
+}
+
+/* Games Menu */
+#lista-juegos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.juegos-grid-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Active Game */
+#juego-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+#juego-timer {
+  font-size: 1.5em;
+  font-family: 'Fredoka One', cursive;
+  color: var(--color-gold);
+}
+
+#juego-puntaje-display {
+  font-size: 1.2em;
+  color: var(--color-primary);
+}
+
+#juego-area {
+  width: 100%;
+  max-width: 900px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#juego-instrucciones {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow);
+  text-align: center;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+#juego-feedback {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 10px;
+  min-height: 40px;
+  text-align: center;
+}
+
+/* Memory game */
+.memoria-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  max-width: 500px;
+}
+
+.memoria-carta {
+  width: 100px;
+  height: 100px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.memoria-carta-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.memoria-carta.volteada .memoria-carta-inner {
+  transform: rotateY(180deg);
+}
+
+.memoria-carta-frente, .memoria-carta-atras {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.memoria-carta-atras {
+  background: var(--bg-card);
+  border: 2px solid var(--color-primary);
+  content: '❓';
+}
+
+.memoria-carta-frente {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  color: white;
+}
+
+.memoria-carta.encontrada {
+  border-color: var(--color-gold);
+  animation: bounceIn 0.5s ease;
+}
+
+/* Catch game */
+.atrapa-campo {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--border-radius);
+}
+
+.atrapa-pregunta {
+  font-size: 2em;
+  font-family: 'Fredoka One', cursive;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.atrapa-burbuja {
+  position: absolute;
+  padding: 15px 25px;
+  border-radius: 50px;
+  background: var(--bg-card);
+  border: 2px solid var(--color-primary);
+  cursor: pointer;
+  font-size: 1.3em;
+  font-weight: bold;
+  transition: transform 0.2s;
+  animation: flotar 3s linear infinite;
+}
+
+.atrapa-burbuja:hover {
+  transform: scale(1.2);
+}
+
+.atrapa-burbuja.correcta {
+  background: var(--color-success);
+  animation: bounceIn 0.5s ease;
+}
+
+.atrapa-burbuja.incorrecta {
+  background: var(--color-error);
+  animation: shake 0.5s ease;
+}
+
+/* Drag & Drop */
+.arrastra-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.arrastra-ecuaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.arrastra-ecuacion {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 250px;
+}
+
+.arrastra-slot {
+  width: 70px;
+  height: 50px;
+  border: 2px dashed var(--color-primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrastra-slot.ocupado {
+  border-style: solid;
+  background: rgba(0, 212, 255, 0.2);
+}
+
+.arrastra-slot.correcto {
+  border-color: var(--color-success);
+  background: rgba(0, 230, 118, 0.2);
+}
+
+.arrastra-slot.incorrecto {
+  border-color: var(--color-error);
+  background: rgba(255, 82, 82, 0.2);
+}
+
+.arrastra-respuestas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.arrastra-pieza {
+  padding: 12px 20px;
+  background: var(--bg-card);
+  border: 2px solid var(--color-secondary);
+  border-radius: 12px;
+  cursor: grab;
+  font-size: 1.3em;
+  font-weight: bold;
+  user-select: none;
+}
+
+.arrastra-pieza:active {
+  cursor: grabbing;
+}
+
+.arrastra-pieza.colocada {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Detective */
+.detective-escena {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  text-align: center;
+  max-width: 600px;
+  padding: 30px;
+}
+
+.detective-pista {
+  font-size: 1.2em;
+  margin: 15px 0;
+  padding: 15px;
+  background: rgba(0,212,255,0.1);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 0 12px 12px 0;
+}
+
+.detective-input {
+  font-size: 1.5em;
+  width: 120px;
+  text-align: center;
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: 12px;
+  color: white;
+  padding: 10px;
+}
+
+.detective-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 15px rgba(255,215,0,0.3);
+}
+
+/* Time Challenge */
+.tiempo-display {
+  font-size: 3em;
+  font-family: 'Fredoka One', cursive;
+  color: var(--color-gold);
+  text-align: center;
+  margin: 10px;
+}
+
+.tiempo-pregunta {
+  font-size: 2.5em;
+  font-family: 'Fredoka One', cursive;
+  text-align: center;
+  margin: 20px;
+}
+
+.tiempo-opciones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 400px;
+}
+
+.tiempo-opcion {
+  padding: 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.5em;
+  font-family: 'Fredoka One', cursive;
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+}
+
+/* Game Results */
+.resultado-contenido {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  text-align: center;
+  max-width: 500px;
+  padding: 40px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow);
+}
+
+.resultado-estrellas {
+  font-size: 3em;
+  margin: 20px 0;
+}
+
+.resultado-puntaje {
+  font-size: 2em;
+  font-family: 'Fredoka One', cursive;
+  color: var(--color-gold);
+}
+
+.resultado-mensaje {
+  font-size: 1.2em;
+  margin: 15px 0;
+  color: var(--color-text-muted);
+}
+
+.resultado-botones {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* Progress */
+#progreso-resumen {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  text-align: center;
+  min-width: 150px;
+}
+
+.stat-valor {
+  font-size: 2.5em;
+  font-family: 'Fredoka One', cursive;
+  color: var(--color-primary);
+}
+
+.stat-label {
+  color: var(--color-text-muted);
+  font-size: 0.9em;
+}
+
+#progreso-detalle {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.progreso-tabla-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+}
+
+/* Achievements */
+#logros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.logro-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  text-align: center;
+}
+
+.logro-icono {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.logro-nombre {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.logro-desc {
+  color: var(--color-text-muted);
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+.logro-card.logro-bloqueado {
+  filter: grayscale(80%);
+  opacity: 0.5;
+}
+
+.logro-card.logro-desbloqueado {
+  border-color: var(--color-gold);
+  animation: glow-pulse 2s infinite;
+}
+
+/* SIMCE */
+#simce-layout {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+#simce-nav {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.simce-nav-btn {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.simce-nav-btn.respondida {
+  border-color: var(--color-success);
+  background: rgba(0, 230, 118, 0.1);
+}
+
+.simce-nav-btn.activa {
+  border-color: var(--color-primary);
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.simce-nav-btn.sin-responder {
+  border-color: rgba(176, 176, 208, 0.3);
+}
+
+#simce-contenido {
+  flex: 1;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 30px;
+}
+
+#simce-pregunta-texto {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+#simce-alternativas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.simce-alt {
+  padding: 15px 20px;
+  background: var(--bg-card);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: var(--transition);
+}
+
+.simce-alt:hover {
+  border-color: var(--color-primary);
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.simce-alt.seleccionada {
+  border-color: var(--color-primary);
+  background: rgba(0, 212, 255, 0.2);
+}
+
+#simce-controles {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+/* SIMCE Results */
+.resultado-simce {
+  max-width: 800px;
+}
+
+.simce-review {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.review-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.review-correcta {
+  color: var(--color-success);
+}
+
+.review-incorrecta {
+  color: var(--color-error);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tarjeta-planeta {
+    width: 110px;
+    height: 140px;
+  }
+  .memoria-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  #simce-layout {
+    flex-direction: column;
+  }
+  #simce-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+  .quiz-opciones {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  #mapa-galaxia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .memoria-grid {
+    grid-template-columns: repeat(4, 80px);
+  }
+}
+
+/* Modal Selector de Planeta y Misiones */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 14, 39, 0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 15px;
+}
+
+.modal-card {
+  background: linear-gradient(145deg, rgba(30, 33, 72, 0.95), rgba(15, 18, 45, 0.98));
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 45px rgba(0, 212, 255, 0.35), inset 0 0 20px rgba(124, 77, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px 25px;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-historia-caja {
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 15px 0 20px 0;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.modal-historia-titulo {
+  color: var(--color-gold);
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-historia-texto {
+  color: #e0e6ed;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.modal-mision-alerta {
+  background: rgba(255, 107, 53, 0.15);
+  border: 1px dashed var(--color-accent);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: #ffb74d;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-mision-alerta.completada {
+  background: rgba(0, 230, 118, 0.15);
+  border-color: var(--color-success);
+  color: #69f0ae;
+}
+
+.btn-bloqueado-candado {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 2px dashed rgba(255, 255, 255, 0.25) !important;
+  color: #8c90b0 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  position: relative;
+  opacity: 0.7;
+}
+
+.btn-bloqueado-candado:hover {
+  background: rgba(255, 82, 82, 0.15) !important;
+  border-color: var(--color-error) !important;
+  color: #ff8a80 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-mision-activa {
+  background: linear-gradient(135deg, #00e676, #00b0ff) !important;
+  color: #04121f !important;
+  font-weight: 800 !important;
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.5) !important;
+  animation: pulse 2s infinite;
+}
+
+/* Control de límites y proporciones espaciales estrictas */
+.tarjeta-paso-secuencial {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.contenedor-grupos-elegante {
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.gran-ecuacion-animada {
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .gran-ecuacion-animada {
+    font-size: 2.5rem;
+  }
+  .secuencial-bolita {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 0.85rem;
+  }
+  .secuencial-progreso-barra {
+    gap: 6px;
+    padding: 6px 10px;
+  }
+  .controles-navegacion-paso {
+    flex-direction: column;
+    width: 100%;
+  }
+  .controles-navegacion-paso button {
+    width: 100%;
+  }
+}

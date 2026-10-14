@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Galaxia Multiplicadora - Sistema</title>
+  <link href='https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap' rel='stylesheet'>
+  <link rel='stylesheet' href='CSS/styles.css'>
+  <link rel='stylesheet' href='CSS/animations.css'>
+</head>
+<body>
+  <div class='stars-layer-3'></div>
+  <div id='notificacion-container'></div>
+
+  <!-- SECTION: Main Menu -->
+  <section id='pantalla-menu' class='pantalla'>
+    <div id='header-menu'>
+      <div class='header-izq'>
+        <span id='menu-avatar' class='avatar-display'></span>
+        <span id='menu-nombre' class='nombre-display'></span>
+      </div>
+      <div class='header-der'>
+        <span class='puntaje-badge'>⭐ <span id='menu-puntaje'>0</span></span>
+      </div>
+    </div>
+    <h1 id='titulo-galaxia'>🚀 Galaxia Multiplicadora</h1>
+    <p class='subtitulo'>Selecciona un planeta para comenzar tu aventura</p>
+    <div id='mapa-galaxia'></div>
+    <div id='menu-acciones'>
+      <button class='btn-secundario' onclick='navegarA("pantalla-progreso"); renderizarProgreso();'>📊 Mi Progreso</button>
+      <button class='btn-secundario' onclick='navegarA("pantalla-logros"); renderizarLogros();'>🏆 Mis Logros</button>
+      <button class='btn-acento' id='btn-simce' onclick='iniciarSimce()'>📝 Ensayo SIMCE</button>
+      <button class='btn-secundario btn-small' onclick='reiniciarProgreso()'>🔄 Nuevo Estudiante</button>
+      <button class='btn-peligro btn-small' onclick='cerrarSesion()'>🚪 Salir</button>
+    </div>
+  </section>
+
+  <!-- SECTION: Learn Table -->
+  <section id='pantalla-aprender' class='pantalla'>
+    <div class='seccion-header'>
+      <button class='btn-volver' onclick='navegarA("pantalla-menu")'>←</button>
+      <h2 class='seccion-titulo' id='aprender-titulo'>Aprender Tabla</h2>
+    </div>
+    <div id='aprender-pasos'></div>
+    <div id='contenido-aprender'></div>
+    <div id='aprender-controles'></div>
+  </section>
+
+  <!-- SECTION: Games Menu -->
+  <section id='pantalla-juegos-menu' class='pantalla'>
+    <div class='seccion-header'>
+      <button class='btn-volver' onclick='navegarA("pantalla-menu")'>←</button>
+      <h2 class='seccion-titulo' id='juegos-menu-titulo'>Misiones</h2>
+    </div>
+    <div id='lista-juegos'></div>
+  </section>
+
+  <!-- SECTION: Active Game -->
+  <section id='pantalla-juego' class='pantalla'>
+    <div id='juego-barra'>
+      <button class='btn-volver' onclick='salirJuego()'>←</button>
+      <span id='juego-nombre'></span>
+      <span id='juego-timer'>⏱️ --</span>
+      <span id='juego-puntaje-display'>⭐ 0</span>
+    </div>
+    <div id='juego-instrucciones'></div>
+    <div id='juego-area'></div>
+    <div id='juego-feedback'></div>
+  </section>
+
+  <!-- SECTION: Game Result -->
+  <section id='pantalla-juego-resultado' class='pantalla'>
+    <div class='resultado-contenido'>
+      <h2 id='resultado-titulo'>¡Misión Completada!</h2>
+      <div id='resultado-estrellas' class='resultado-estrellas'></div>
+      <div id='resultado-puntaje' class='resultado-puntaje'></div>
+      <div id='resultado-mensaje' class='resultado-mensaje'></div>
+      <div class='resultado-botones'>
+        <button class='btn-secundario' id='btn-reintentar'>🔄 Reintentar</button>
+        <button class='btn-primario' id='btn-volver-juegos'>🎮 Más Misiones</button>
+        <button class='btn-acento' id='btn-volver-menu-resultado'>🏠 Menú</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Progress -->
+  <section id='pantalla-progreso' class='pantalla'>
+    <div class='seccion-header'>
+      <button class='btn-volver' onclick='navegarA("pantalla-menu")'>←</button>
+      <h2 class='seccion-titulo'>📊 Mi Progreso Espacial</h2>
+    </div>
+    <div id='progreso-resumen'></div>
+    <div id='progreso-barra-general-container'>
+      <p>Progreso General</p>
+      <div class='barra-progreso'><div id='progreso-barra-general' class='barra-progreso-relleno'></div></div>
+      <span id='progreso-porcentaje'>0%</span>
+    </div>
+    <div id='progreso-detalle'></div>
+  </section>
+
+  <!-- SECTION: Achievements -->
+  <section id='pantalla-logros' class='pantalla'>
+    <div class='seccion-header'>
+      <button class='btn-volver' onclick='navegarA("pantalla-menu")'>←</button>
+      <h2 class='seccion-titulo'>🏆 Mis Logros</h2>
+    </div>
+    <div id='logros-grid'></div>
+  </section>
+
+  <!-- SECTION: SIMCE Test -->
+  <section id='pantalla-simce' class='pantalla'>
+    <div class='seccion-header'>
+      <button class='btn-volver' onclick='confirmarSalirSimce()'>←</button>
+      <h2 class='seccion-titulo'>📝 Ensayo Matemático SIMCE</h2>
+    </div>
+    <div id='simce-layout'>
+      <div id='simce-nav'></div>
+      <div id='simce-contenido'>
+        <div id='simce-pregunta-numero'></div>
+        <div id='simce-pregunta-texto'></div>
+        <div id='simce-alternativas'></div>
+        <div id='simce-controles'>
+          <button class='btn-secundario' id='simce-btn-anterior'>⬅ Anterior</button>
+          <button class='btn-primario' id='simce-btn-siguiente'>Siguiente ➡</button>
+          <button class='btn-acento' id='simce-btn-finalizar' style='display:none'>✅ Finalizar Ensayo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: SIMCE Results -->
+  <section id='pantalla-resultado-simce' class='pantalla'>
+    <div class='resultado-contenido resultado-simce'>
+      <h2>📝 Resultado del Ensayo SIMCE</h2>
+      <div id='simce-resultado-puntaje' class='resultado-puntaje'></div>
+      <div id='simce-resultado-mensaje' class='resultado-mensaje'></div>
+      <div id='simce-resultado-detalle'></div>
+      <div class='resultado-botones'>
+        <button class='btn-primario' onclick='navegarA("pantalla-menu"); renderizarMenu();'>🏠 Volver al Menú</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src='JS/sonidos.js'></script>
+  <script src='JS/app.js'></script>
+  <script src='JS/progreso.js'></script>
+  <script src='JS/tablas.js'></script>
+  <script src='JS/juegos.js'></script>
+  <script src='JS/simce.js'></script>
+</body>
+</html>
