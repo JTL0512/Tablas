@@ -52,6 +52,17 @@ function mostrarMenuJuegos(numTabla) {
     lista.appendChild(gridCards);
 }
 
+function actualizarPuntajeEnJuego(puntos, detalle = '') {
+    const el = document.getElementById('juego-puntaje-display');
+    if (el) {
+        if (detalle) {
+            el.innerHTML = `⭐ <strong>Puntos: ${puntos}</strong> <span style="font-size: 0.85em; opacity: 0.85; margin-left: 6px;">(${detalle})</span>`;
+        } else {
+            el.innerHTML = `⭐ <strong>Puntos: ${puntos}</strong>`;
+        }
+    }
+}
+
 function iniciarJuego(tipo, numTabla) {
     window.juegoActual = tipo;
     navegarA('pantalla-juego');
@@ -63,7 +74,7 @@ function iniciarJuego(tipo, numTabla) {
         'tiempo': 'Desafío Contrarreloj'
     };
     document.getElementById('juego-nombre').textContent = nombres[tipo];
-    document.getElementById('juego-puntaje-display').textContent = 'Puntos: 0';
+    actualizarPuntajeEnJuego(0);
     
     const area = document.getElementById('juego-area');
     area.innerHTML = '';
@@ -99,6 +110,7 @@ function finalizarJuego(puntaje, maxPuntaje) {
 // === MEMORIA ===
 function iniciarMemoria(numTabla, area) {
     document.getElementById('juego-instrucciones').textContent = 'Encuentra las parejas (operación y resultado).';
+    actualizarPuntajeEnJuego(0, '0/8 parejas');
     
     let cartas = [];
     let multipliers = shuffle([1,2,3,4,5,6,7,8,9,10]).slice(0, 8);
@@ -161,7 +173,8 @@ function iniciarMemoria(numTabla, area) {
                         volteadas[1].div.style.border = '2px solid #69f0ae';
                         volteadas[1].div.style.boxShadow = '0 0 15px rgba(0, 230, 118, 0.4)';
                         encontradas++;
-                        document.getElementById('juego-puntaje-display').textContent = `Parejas: ${encontradas}/8`;
+                        let ptsActual = encontradas < 8 ? encontradas * 6 : Math.max(10, 50 - (intentos - 8) * 3);
+                        actualizarPuntajeEnJuego(ptsActual, `${encontradas}/8 parejas`);
                         volteadas = [];
                         
                         if(encontradas === 8) {
@@ -190,6 +203,7 @@ function iniciarMemoria(numTabla, area) {
 // === ATRAPA ===
 function iniciarAtrapa(numTabla, area) {
     document.getElementById('juego-instrucciones').textContent = 'Selecciona el resultado correcto.';
+    actualizarPuntajeEnJuego(0, 'Ronda 1/10');
     let ronda = 0;
     let correctas = 0;
     
@@ -270,13 +284,14 @@ function iniciarAtrapa(numTabla, area) {
                     burbuja.style.background = '#4caf50';
                     burbuja.style.boxShadow = '0 0 20px #00e676';
                     correctas++;
-                    document.getElementById('juego-puntaje-display').textContent = `Correctas: ${correctas}/10`;
+                    actualizarPuntajeEnJuego(correctas * 5, `${correctas}/10 aciertos`);
                     setTimeout(jugarRonda, 700);
                 } else {
                     reproducirSonido('error');
                     burbuja.style.background = '#f44336';
                     burbuja.style.boxShadow = '0 0 15px #ff5252';
                     burbuja.style.transform = 'scale(0.8)';
+                    actualizarPuntajeEnJuego(correctas * 5, `${correctas}/10 aciertos`);
                     setTimeout(() => burbuja.remove(), 500);
                 }
             };
@@ -289,6 +304,7 @@ function iniciarAtrapa(numTabla, area) {
 // === ARRASTRA ===
 function iniciarArrastra(numTabla, area) {
     document.getElementById('juego-instrucciones').textContent = 'Arrastra cada resultado a su operación.';
+    actualizarPuntajeEnJuego(0, '0/6 completados');
     let arrastraHtml = `
         <div class="arrastra-container" style="display:flex; justify-content:space-around; align-items:start; margin-top:20px;">
             <div class="arrastra-ecuaciones" id="drop-zone" style="width:40%;"></div>
@@ -351,6 +367,9 @@ function iniciarArrastra(numTabla, area) {
                 if(p) p.style.display = 'none';
                 
                 correctos++;
+                let pts = correctos < 6 ? correctos * 8 : Math.max(0, 50 - intentosError * 3);
+                actualizarPuntajeEnJuego(pts, `${correctos}/6 completados`);
+                
                 if(correctos === 6) {
                     let score = Math.max(0, 50 - intentosError * 3);
                     setTimeout(() => finalizarJuego(score, 50), 1000);
@@ -359,6 +378,8 @@ function iniciarArrastra(numTabla, area) {
                 slot.style.border = '2px solid #f44336';
                 intentosError++;
                 reproducirSonido('error');
+                let pts = correctos < 6 ? correctos * 8 : Math.max(0, 50 - intentosError * 3);
+                actualizarPuntajeEnJuego(pts, `${correctos}/6 completados`);
                 setTimeout(() => slot.style.border = '2px dashed #ccc', 800);
             }
         };
@@ -368,6 +389,7 @@ function iniciarArrastra(numTabla, area) {
 // === DETECTIVE ===
 function iniciarDetective(numTabla, area) {
     document.getElementById('juego-instrucciones').textContent = 'Descubre el número misterioso.';
+    actualizarPuntajeEnJuego(0, 'Caso 1 de 5');
     let ronda = 1;
     let correctasPrimera = 0;
     
@@ -380,9 +402,12 @@ function iniciarDetective(numTabla, area) {
     function jugarRonda() {
         if(ronda > 5) {
             if(correctasPrimera === 5) desbloquearLogro('detective');
+            actualizarPuntajeEnJuego(correctasPrimera * 10, '¡Completado!');
             finalizarJuego(correctasPrimera * 10, 50);
             return;
         }
+        
+        actualizarPuntajeEnJuego(correctasPrimera * 10, `Caso ${ronda} de 5`);
         
         let m = Math.floor(Math.random()*10)+1;
         let ans = numTabla * m;
@@ -424,6 +449,7 @@ function iniciarDetective(numTabla, area) {
                 document.getElementById('det-feedback').style.color = '#69f0ae';
                 document.getElementById('det-feedback').style.textShadow = '0 0 10px rgba(105, 240, 174, 0.5)';
                 if(intentos === 0) correctasPrimera++;
+                actualizarPuntajeEnJuego(correctasPrimera * 10, `Caso ${ronda} de 5`);
                 ronda++;
                 setTimeout(jugarRonda, 1500);
             } else {
@@ -441,6 +467,7 @@ function iniciarDetective(numTabla, area) {
 // === TIEMPO ===
 function iniciarTiempo(numTabla, area) {
     document.getElementById('juego-instrucciones').textContent = 'Responde tantas como puedas en 45 segundos.';
+    actualizarPuntajeEnJuego(0, '0 aciertos');
     let timeLeft = 45;
     let correctas = 0;
     let racha = 0;
@@ -500,12 +527,13 @@ function iniciarTiempo(numTabla, area) {
                     racha++;
                     reproducirSonido('correcto');
                     if(racha === 5) desbloquearLogro('racha_5');
-                    document.getElementById('juego-puntaje-display').textContent = `Correctas: ${correctas}`;
+                    actualizarPuntajeEnJuego(Math.min(50, correctas * 5), `${correctas} aciertos`);
                     setTimeout(nuevaPregunta, 300);
                 } else {
                     btn.style.background = '#f44336';
                     racha = 0;
                     reproducirSonido('error');
+                    actualizarPuntajeEnJuego(Math.min(50, correctas * 5), `${correctas} aciertos`);
                     setTimeout(nuevaPregunta, 500);
                 }
             };
