@@ -961,57 +961,49 @@ button:active {
 .memoria-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  max-width: 500px;
+  gap: 14px;
+  max-width: 580px;
+  margin: 0 auto;
 }
 
 .memoria-carta {
-  width: 100px;
-  height: 100px;
-  perspective: 1000px;
+  min-width: 90px;
+  min-height: 90px;
   cursor: pointer;
+  border-radius: 16px;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 1.4rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  user-select: none;
+  background: linear-gradient(145deg, #181c48, #2a2d6b) !important;
+  border: 2px solid rgba(0, 212, 255, 0.4) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.1) !important;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
-.memoria-carta-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+.memoria-carta:hover:not(.encontrada) {
+  transform: translateY(-4px) scale(1.05);
+  border-color: #00d4ff !important;
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.35) !important;
 }
 
-.memoria-carta.volteada .memoria-carta-inner {
-  transform: rotateY(180deg);
-}
-
-.memoria-carta-frente, .memoria-carta-atras {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.memoria-carta-atras {
-  background: var(--bg-card);
-  border: 2px solid var(--color-primary);
-  content: '❓';
-}
-
-.memoria-carta-frente {
-  transform: rotateY(180deg);
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
-  color: white;
+.memoria-carta.volteada {
+  background: linear-gradient(135deg, #7c4dff, #00d4ff) !important;
+  color: #ffffff !important;
+  border-color: #ffd700 !important;
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6) !important;
 }
 
 .memoria-carta.encontrada {
-  border-color: var(--color-gold);
+  background: linear-gradient(135deg, #1b5e20, #00c853) !important;
+  color: #ffffff !important;
+  border: 2px solid #69f0ae !important;
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.5) !important;
   animation: bounceIn 0.5s ease;
+  cursor: default;
 }
 
 /* Catch game */
@@ -1330,7 +1322,7 @@ button:active {
 /* SIMCE */
 #simce-layout {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   width: 100%;
   max-width: 1100px;
 }
@@ -1343,25 +1335,39 @@ button:active {
 }
 
 .simce-nav-btn {
-  background: var(--bg-card);
+  background: rgba(30, 33, 72, 0.85);
   border-radius: var(--border-radius);
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   text-align: center;
   cursor: pointer;
-  font-weight: bold;
-  color: white;
-  border: 1px solid rgba(255,255,255,0.1);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: #ffffff;
+  border: 2px solid rgba(255,255,255,0.12);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.simce-nav-btn:hover {
+  transform: translateX(4px);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
 }
 
 .simce-nav-btn.respondida {
-  border-color: var(--color-success);
-  background: rgba(0, 230, 118, 0.1);
+  border-color: #00e676;
+  background: rgba(0, 230, 118, 0.2);
+  color: #69f0ae;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
 }
 
 .simce-nav-btn.activa {
-  border-color: var(--color-primary);
-  background: rgba(0, 212, 255, 0.1);
+  border-color: var(--color-gold);
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.6), rgba(0, 212, 255, 0.6));
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
 .simce-nav-btn.sin-responder {
@@ -1370,72 +1376,117 @@ button:active {
 
 #simce-contenido {
   flex: 1;
-  background: var(--bg-card);
+  background: linear-gradient(145deg, rgba(30, 33, 72, 0.95), rgba(15, 18, 45, 0.98));
+  border: 2px solid rgba(0, 212, 255, 0.35);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(0, 212, 255, 0.05);
   border-radius: var(--border-radius);
-  padding: 30px;
+  padding: 35px 30px;
+}
+
+#simce-pregunta-numero {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  color: var(--color-gold);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+  margin-bottom: 18px;
+  letter-spacing: 1.5px;
+  display: inline-block;
+  padding: 6px 18px;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 20px;
 }
 
 #simce-pregunta-texto {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin-bottom: 25px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.35em;
+  font-weight: 800;
+  line-height: 1.7;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  margin-bottom: 28px;
+  background: rgba(10, 14, 39, 0.6);
+  padding: 20px 24px;
+  border-radius: 16px;
+  border-left: 5px solid var(--color-primary);
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 #simce-alternativas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .simce-alt {
-  padding: 15px 20px;
-  background: var(--bg-card);
-  border: 2px solid transparent;
-  border-radius: 12px;
+  padding: 18px 25px;
+  background: linear-gradient(135deg, rgba(25, 28, 65, 0.9), rgba(35, 40, 85, 0.95));
+  border: 2px solid rgba(0, 212, 255, 0.3);
+  border-radius: 16px;
   cursor: pointer;
-  font-size: 1.1em;
-  transition: var(--transition);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3em;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
 }
 
 .simce-alt:hover {
-  border-color: var(--color-primary);
-  background: rgba(0, 212, 255, 0.1);
+  border-color: #00d4ff;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(124, 77, 255, 0.35));
+  color: #ffffff;
+  transform: translateX(8px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.35);
 }
 
 .simce-alt.seleccionada {
-  border-color: var(--color-primary);
-  background: rgba(0, 212, 255, 0.2);
+  border-color: #ffd700;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 107, 53, 0.35));
+  color: #ffffff;
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.45);
 }
 
 #simce-controles {
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 /* SIMCE Results */
 .resultado-simce {
-  max-width: 800px;
+  max-width: 850px;
+  width: 100%;
 }
 
 .simce-review {
-  margin-top: 20px;
+  margin-top: 25px;
   text-align: left;
 }
 
 .review-item {
   display: flex;
-  gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: rgba(20, 24, 60, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .review-correcta {
-  color: var(--color-success);
+  color: #00e676;
 }
 
 .review-incorrecta {
-  color: var(--color-error);
+  color: #ff5252;
 }
 
 /* Responsive */

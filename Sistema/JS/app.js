@@ -1,9 +1,23 @@
 function reproducirSonido(tipo) {
     try {
+        if (tipo === 'correcto' || tipo === 'error') {
+            const ruta = tipo === 'correcto' ? 'SONIDOS/correcto.mp3' : 'SONIDOS/error.mp3';
+            const audio = new Audio(ruta);
+            audio.volume = 1;
+            const prom = audio.play();
+            if (prom !== undefined) {
+                prom.catch(() => {
+                    if (typeof SonidosGalaxia !== 'undefined') {
+                        if (tipo === 'correcto') SonidosGalaxia.correcto();
+                        else SonidosGalaxia.error();
+                    }
+                });
+            }
+            return;
+        }
+
         if (typeof SonidosGalaxia !== 'undefined') {
-            if (tipo === 'correcto') SonidosGalaxia.correcto();
-            else if (tipo === 'error') SonidosGalaxia.error();
-            else if (tipo === 'exito') SonidosGalaxia.exito();
+            if (tipo === 'exito') SonidosGalaxia.exito();
             else if (tipo === 'click') SonidosGalaxia.click();
             else if (tipo === 'logro') SonidosGalaxia.logro();
             else if (tipo === 'siguiente') SonidosGalaxia.siguiente();

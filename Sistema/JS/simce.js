@@ -122,6 +122,7 @@ function mostrarPreguntaSimce(index) {
         btn.className = `simce-alt ${respuestas[index] === i ? 'seleccionada' : ''}`;
         btn.textContent = String.fromCharCode(65 + i) + ') ' + alt;
         btn.onclick = () => {
+            reproducirSonido('click');
             respuestas[index] = i;
             mostrarPreguntaSimce(index); // re-render to update highlights
         };
@@ -157,20 +158,25 @@ function finalizarSimce() {
         let isCorrect = resUser === q.correcta;
         if(isCorrect) correctas++;
         
-        let color = isCorrect ? 'green' : 'red';
+        let color = isCorrect ? '#69f0ae' : '#ff5252';
         let mark = isCorrect ? '✅' : '❌';
         let resText = resUser !== null ? q.alternativas[resUser] : 'Sin responder';
         
         revisionHTML += `
-            <div class="review-item" style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-left:5px solid ${color};">
-                <p><strong>${i+1}. ${q.texto}</strong></p>
-                <p>${mark} Tu respuesta: ${resText}</p>
-                ${!isCorrect ? `<p style="color:green;">Correcta: ${q.alternativas[q.correcta]}</p>` : ''}
-                <p style="font-size:0.9em; color:#555;"><em>Explicación: ${q.explicacion}</em></p>
+            <div class="review-item" style="border: 1px solid rgba(255,255,255,0.18); padding: 18px 20px; margin-bottom: 16px; border-left: 6px solid ${color}; background: linear-gradient(135deg, rgba(20, 24, 60, 0.95), rgba(30, 35, 80, 0.9)); border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                <p style="color: #ffffff; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.15em; line-height: 1.5; margin-bottom: 10px;">${i+1}. ${q.texto}</p>
+                <p style="color: ${isCorrect ? '#69f0ae' : '#ff5252'}; font-weight: 800; font-size: 1.05em; margin-bottom: 6px;">${mark} Tu respuesta: <span style="text-decoration: ${isCorrect ? 'none' : 'line-through'};">${resText}</span></p>
+                ${!isCorrect ? `<p style="color: #00e676; font-weight: 800; font-size: 1.05em; margin-bottom: 6px;">✅ Respuesta correcta: ${q.alternativas[q.correcta]}</p>` : ''}
+                <div style="font-size: 1.05em; color: #ffd54f; font-weight: 800; background: rgba(255, 215, 0, 0.12); border: 1px solid rgba(255, 215, 0, 0.35); padding: 10px 14px; border-radius: 10px; margin-top: 10px; line-height: 1.5;">
+                    💡 <strong>Explicación:</strong> ${q.explicacion}
+                </div>
             </div>
         `;
     });
     revisionHTML += '</div>';
+    
+    // Enhanced styling for review heading
+    revisionHTML = revisionHTML.replace('<h3>Revisión de respuestas:</h3>', '<h3 style="font-family: \'Fredoka One\', cursive; color: #ffd700; font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,215,0,0.3);">📋 Revisión de respuestas:</h3>');
     
     window.datosEstudiante.simceResultado = {
         puntaje: correctas,
@@ -184,11 +190,16 @@ function finalizarSimce() {
     verificarLogros();
     
     navegarA('pantalla-resultado-simce');
+    if (correctas >= 6) {
+        reproducirSonido('exito');
+    } else {
+        reproducirSonido('alerta');
+    }
     
     let porcentaje = (correctas / 10) * 100;
     let estrellas = calcularEstrellas(porcentaje);
     
-    document.getElementById('simce-resultado-puntaje').textContent = `${correctas} de 10 correctas`;
+    document.getElementById('simce-resultado-puntaje').innerHTML = `<span style="font-family: 'Fredoka One', cursive; font-size: 2.2rem; color: #ffd700; text-shadow: 0 0 15px rgba(255,215,0,0.4);">${correctas} de 10 correctas</span>`;
     
     let msj = '';
     if(correctas === 10) msj = '¡PERFECTO! 🌟 Eres un verdadero genio matemático del universo!';
@@ -198,8 +209,8 @@ function finalizarSimce() {
     else msj = '¡NO TE RINDAS! 💪 Practica más las tablas y vuelve a intentarlo.';
     
     document.getElementById('simce-resultado-mensaje').innerHTML = `
-        <div style="font-size:2rem; margin:10px 0;">${'⭐'.repeat(estrellas)}${'🌑'.repeat(3 - estrellas)}</div>
-        <p>${msj}</p>
+        <div style="font-size:2.5rem; margin:15px 0;">${'⭐'.repeat(estrellas)}${'🌑'.repeat(3 - estrellas)}</div>
+        <p style="font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: #e0e6ed; text-shadow: 0 0 5px rgba(255,255,255,0.2);">${msj}</p>
     `;
     
     document.getElementById('simce-resultado-detalle').innerHTML = revisionHTML;

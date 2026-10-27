@@ -124,17 +124,26 @@ function iniciarMemoria(numTabla, area) {
     cartas.forEach((c, idx) => {
         let div = document.createElement('div');
         div.className = 'memoria-carta';
-        div.style.background = '#333';
-        div.style.color = 'white';
+        div.style.background = 'linear-gradient(145deg, #1a1a4e, #2d2d6b)';
+        div.style.color = '#ffffff';
         div.style.padding = '20px';
         div.style.textAlign = 'center';
         div.style.cursor = 'pointer';
-        div.style.fontSize = '1.2rem';
-        div.style.borderRadius = '8px';
+        div.style.fontSize = '1.4rem';
+        div.style.fontFamily = "'Fredoka One', cursive";
+        div.style.borderRadius = '16px';
+        div.style.border = '2px solid rgba(0, 212, 255, 0.3)';
+        div.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+        div.style.transition = 'all 0.3s ease';
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.style.minHeight = '80px';
         div.textContent = '❓';
         
         div.onclick = () => {
             if(volteadas.length < 2 && !div.classList.contains('volteada') && !div.classList.contains('encontrada')) {
+                reproducirSonido('click');
                 div.textContent = c.val;
                 div.classList.add('volteada');
                 volteadas.push({div, c});
@@ -142,10 +151,15 @@ function iniciarMemoria(numTabla, area) {
                 if(volteadas.length === 2) {
                     intentos++;
                     if(volteadas[0].c.match === volteadas[1].c.match) {
+                        reproducirSonido('correcto');
                         volteadas[0].div.classList.add('encontrada');
                         volteadas[1].div.classList.add('encontrada');
-                        volteadas[0].div.style.background = '#4caf50';
-                        volteadas[1].div.style.background = '#4caf50';
+                        volteadas[0].div.style.background = 'linear-gradient(145deg, #1b5e20, #2e7d32)';
+                        volteadas[0].div.style.border = '2px solid #69f0ae';
+                        volteadas[0].div.style.boxShadow = '0 0 15px rgba(0, 230, 118, 0.4)';
+                        volteadas[1].div.style.background = 'linear-gradient(145deg, #1b5e20, #2e7d32)';
+                        volteadas[1].div.style.border = '2px solid #69f0ae';
+                        volteadas[1].div.style.boxShadow = '0 0 15px rgba(0, 230, 118, 0.4)';
                         encontradas++;
                         document.getElementById('juego-puntaje-display').textContent = `Parejas: ${encontradas}/8`;
                         volteadas = [];
@@ -156,6 +170,7 @@ function iniciarMemoria(numTabla, area) {
                             setTimeout(() => finalizarJuego(score, 50), 1000);
                         }
                     } else {
+                        reproducirSonido('error');
                         setTimeout(() => {
                             volteadas[0].div.textContent = '❓';
                             volteadas[1].div.textContent = '❓';
@@ -215,28 +230,52 @@ function iniciarAtrapa(numTabla, area) {
         }
         ops = shuffle(ops);
         
-        ops.forEach(op => {
+        // Calculate grid positions to prevent overlap
+        const cols = 3;
+        const rows = 2;
+        const cellW = 100 / cols;
+        const cellH = 100 / rows;
+        const posiciones = [];
+        for(let r = 0; r < rows; r++) {
+            for(let c = 0; c < cols; c++) {
+                posiciones.push({
+                    left: (c * cellW) + (cellW * 0.15) + (Math.random() * cellW * 0.3),
+                    top: (r * cellH) + (cellH * 0.1) + (Math.random() * cellH * 0.3)
+                });
+            }
+        }
+        const posicionesBarajadas = posiciones.sort(() => Math.random() - 0.5);
+        
+        ops.forEach((op, idx) => {
             let burbuja = document.createElement('div');
             burbuja.className = 'atrapa-burbuja';
             burbuja.style.position = 'absolute';
-            burbuja.style.left = Math.random() * 80 + '%';
-            burbuja.style.top = Math.random() * 80 + '%';
-            burbuja.style.padding = '15px';
-            burbuja.style.background = '#4a148c';
+            burbuja.style.left = posicionesBarajadas[idx].left + '%';
+            burbuja.style.top = posicionesBarajadas[idx].top + '%';
+            burbuja.style.padding = '15px 20px';
+            burbuja.style.background = 'linear-gradient(145deg, #4a148c, #7c4dff)';
             burbuja.style.color = 'white';
             burbuja.style.borderRadius = '50%';
             burbuja.style.cursor = 'pointer';
             burbuja.style.transition = 'all 0.3s';
+            burbuja.style.minWidth = '55px';
+            burbuja.style.textAlign = 'center';
+            burbuja.style.fontFamily = "'Fredoka One', cursive";
+            burbuja.style.fontSize = '1.2rem';
             burbuja.textContent = op;
             
             burbuja.onclick = () => {
                 if(op === ans) {
+                    reproducirSonido('correcto');
                     burbuja.style.background = '#4caf50';
+                    burbuja.style.boxShadow = '0 0 20px #00e676';
                     correctas++;
                     document.getElementById('juego-puntaje-display').textContent = `Correctas: ${correctas}/10`;
                     setTimeout(jugarRonda, 700);
                 } else {
+                    reproducirSonido('error');
                     burbuja.style.background = '#f44336';
+                    burbuja.style.boxShadow = '0 0 15px #ff5252';
                     burbuja.style.transform = 'scale(0.8)';
                     setTimeout(() => burbuja.remove(), 500);
                 }
@@ -306,6 +345,7 @@ function iniciarArrastra(numTabla, area) {
                 slot.textContent = draggedVal;
                 slot.style.border = '2px solid #4caf50';
                 slot.style.background = '#c8e6c9';
+                reproducirSonido('correcto');
                 
                 let p = Array.from(document.querySelectorAll('.arrastra-pieza')).find(el => el.textContent == draggedVal && el.style.display !== 'none');
                 if(p) p.style.display = 'none';
@@ -318,6 +358,7 @@ function iniciarArrastra(numTabla, area) {
             } else {
                 slot.style.border = '2px solid #f44336';
                 intentosError++;
+                reproducirSonido('error');
                 setTimeout(() => slot.style.border = '2px dashed #ccc', 800);
             }
         };
@@ -357,28 +398,40 @@ function iniciarDetective(numTabla, area) {
         let intentos = 0;
         
         container.innerHTML = `
-            <h3>Caso ${ronda} de 5</h3>
-            <div class="detective-pista" style="font-size:1.5rem; margin:20px; padding:20px; background:#e0f7fa; border-radius:10px; color:#006064;">
+            <h3 style="font-family: 'Fredoka One', cursive; font-size: 1.8rem; color: #ffd700; text-shadow: 0 0 12px rgba(255,215,0,0.5); margin-bottom: 15px;">🔍 Caso ${ronda} de 5</h3>
+            <div class="detective-pista" style="font-size: 1.35rem; margin: 20px auto; max-width: 550px; padding: 22px 25px; background: linear-gradient(145deg, rgba(30, 33, 72, 0.95), rgba(15, 18, 45, 0.95)); border-radius: 16px; color: #ffffff; border: 2px solid rgba(0, 212, 255, 0.4); border-left: 6px solid #00d4ff; font-family: 'Nunito', sans-serif; font-weight: 800; line-height: 1.6; box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(0,212,255,0.15); text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
                 "${pistaObj.texto}"
             </div>
-            <input type="number" id="det-input" class="detective-input" style="font-size:1.5rem; padding:10px; width:100px; text-align:center;">
-            <br><br>
-            <button id="det-btn" class="btn-primario">Resolver 🔍</button>
-            <p id="det-feedback" style="margin-top:15px; font-weight:bold;"></p>
+            <div style="margin: 20px 0;">
+                <input type="number" id="det-input" class="detective-input" placeholder="?" style="font-size: 2rem; padding: 12px 20px; width: 140px; text-align: center; font-family: 'Fredoka One', cursive; background: rgba(10, 14, 39, 0.85); border: 2px solid #00d4ff; border-radius: 16px; color: #ffd700; box-shadow: 0 0 15px rgba(0,212,255,0.3); outline: none;">
+            </div>
+            <button id="det-btn" class="btn-primario" style="font-size: 1.2rem; padding: 14px 35px; box-shadow: 0 5px 20px rgba(0,212,255,0.4);">Resolver Caso 🔍</button>
+            <p id="det-feedback" style="margin-top: 18px; font-weight: 800; font-family: 'Fredoka One', cursive; font-size: 1.25rem; min-height: 32px;"></p>
         `;
         
+        const inputDet = document.getElementById('det-input');
+        inputDet.focus();
+        inputDet.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('det-btn').click();
+        });
+
         document.getElementById('det-btn').onclick = () => {
             let val = parseInt(document.getElementById('det-input').value);
+            if(isNaN(val)) return;
             if(val === pistaObj.resp) {
-                document.getElementById('det-feedback').textContent = '¡Correcto! 🎉';
-                document.getElementById('det-feedback').style.color = 'green';
+                reproducirSonido('correcto');
+                document.getElementById('det-feedback').textContent = '¡Correcto! Caso resuelto con éxito 🎉';
+                document.getElementById('det-feedback').style.color = '#69f0ae';
+                document.getElementById('det-feedback').style.textShadow = '0 0 10px rgba(105, 240, 174, 0.5)';
                 if(intentos === 0) correctasPrimera++;
                 ronda++;
                 setTimeout(jugarRonda, 1500);
             } else {
                 intentos++;
-                document.getElementById('det-feedback').textContent = `Incorrecto. Pista: la respuesta tiene que ver con la tabla del ${numTabla}. Intenta de nuevo.`;
-                document.getElementById('det-feedback').style.color = 'red';
+                reproducirSonido('error');
+                document.getElementById('det-feedback').textContent = `Incorrecto. Pista: la respuesta se relaciona con la tabla del ${numTabla}. ¡Inténtalo de nuevo! 🔍`;
+                document.getElementById('det-feedback').style.color = '#ff5252';
+                document.getElementById('det-feedback').style.textShadow = '0 0 10px rgba(255, 82, 82, 0.5)';
             }
         };
     }
@@ -445,12 +498,14 @@ function iniciarTiempo(numTabla, area) {
                     btn.style.background = '#4caf50';
                     correctas++;
                     racha++;
+                    reproducirSonido('correcto');
                     if(racha === 5) desbloquearLogro('racha_5');
                     document.getElementById('juego-puntaje-display').textContent = `Correctas: ${correctas}`;
                     setTimeout(nuevaPregunta, 300);
                 } else {
                     btn.style.background = '#f44336';
                     racha = 0;
+                    reproducirSonido('error');
                     setTimeout(nuevaPregunta, 500);
                 }
             };

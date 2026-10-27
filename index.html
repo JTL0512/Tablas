@@ -464,15 +464,115 @@
 
         function reproducirSonido(tipo) {
             const ruta = tipo === 'correcto'
-                ? './SONIDOS/correcto.mp3'
-                : './SONIDOS/error.mp3';
+                ? './Sistema/SONIDOS/correcto.mp3'
+                : './Sistema/SONIDOS/error.mp3';
 
             const audio = new Audio(ruta);
             audio.volume = 1;
 
-            audio.play().catch(error => {
-                console.error('No se pudo reproducir el sonido:', error);
-            });
+            const prom = audio.play();
+            if (prom !== undefined) {
+                prom.catch(error => {
+                    console.warn('Audio mp3 bloqueado o inaccesible, usando sintetizador:', error);
+                    try {
+                        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                        if (ctx.state === 'suspended') ctx.resume();
+                        const now = ctx.currentTime;
+                        if (tipo === 'correcto') {
+                            [523.25, 659.25, 783.99].forEach((freq, i) => {
+                                const osc = ctx.createOscillator();
+                                const gain = ctx.createGain();
+                                osc.connect(gain);
+                                gain.connect(ctx.destination);
+                                osc.type = 'sine';
+                                osc.frequency.setValueAtTime(freq, now + i * 0.1);
+                                gain.gain.setValueAtTime(0.25, now + i * 0.1);
+                                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.25);
+                                osc.start(now + i * 0.1);
+                                osc.stop(now + i * 0.1 + 0.25);
+                            });
+                        } else {
+                            [330, 220].forEach((freq, i) => {
+                                const osc = ctx.createOscillator();
+                                const gain = ctx.createGain();
+                                osc.connect(gain);
+                                gain.connect(ctx.destination);
+                                osc.type = 'square';
+                                osc.frequency.setValueAtTime(freq, now + i * 0.15);
+                                gain.gain.setValueAtTime(0.2, now + i * 0.15);
+                                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.2);
+                                osc.start(now + i * 0.15);
+                                osc.stop(now + i * 0.15 + 0.2);
+                            });
+                        }
+                    } catch (e) {
+                        console.error('AudioContext error:', e);
+                    }
+                });
+            }
+        }
+
+        // Confetti effect
+        function lanzarConfeti() {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'confetti-canvas';
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.zIndex = '200';
+            canvas.style.pointerEvents = 'none';
+            document.body.appendChild(canvas);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const ctx = canvas.getContext('2d');
+            
+            const confettis = [];
+            const colores = ['#ffd700','#00d4ff','#7c4dff','#ff6b35','#00e676','#ff4757','#ff9800','#e91e63'];
+            
+            for(let i = 0; i < 150; i++) {
+                confettis.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 12 + 6,
+                    h: Math.random() * 8 + 4,
+                    color: colores[Math.floor(Math.random() * colores.length)],
+                    velocidadY: Math.random() * 4 + 2,
+                    velocidadX: Math.random() * 4 - 2,
+                    rotacion: Math.random() * 360,
+                    rotVel: Math.random() * 10 - 5,
+                    opacidad: 1
+                });
+            }
+            
+            let frame = 0;
+            function animar() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                frame++;
+                let activos = 0;
+                confettis.forEach(c => {
+                    c.y += c.velocidadY;
+                    c.x += c.velocidadX;
+                    c.rotacion += c.rotVel;
+                    if(frame > 60) c.opacidad -= 0.008;
+                    if(c.opacidad <= 0) return;
+                    activos++;
+                    ctx.save();
+                    ctx.translate(c.x, c.y);
+                    ctx.rotate((c.rotacion * Math.PI) / 180);
+                    ctx.globalAlpha = Math.max(0, c.opacidad);
+                    ctx.fillStyle = c.color;
+                    ctx.fillRect(-c.w/2, -c.h/2, c.w, c.h);
+                    ctx.restore();
+                });
+                if(activos > 0 && frame < 200) {
+                    requestAnimationFrame(animar);
+                } else {
+                    canvas.remove();
+                }
+            }
+            requestAnimationFrame(animar);
         }
 
         // Handle login
@@ -523,6 +623,7 @@
 
             // Success animation & redirect
             reproducirSonido('correcto');
+            lanzarConfeti();
 
             successText.textContent = `¡Bienvenido/a, ${nombre}!`;
             successOverlay.classList.add('show');
